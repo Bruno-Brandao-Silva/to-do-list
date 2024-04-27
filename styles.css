@@ -144,7 +144,7 @@ button:hover {
 
 #tasksContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 31.333rem));
     gap: 3rem;
     margin: 0 10rem;
 }

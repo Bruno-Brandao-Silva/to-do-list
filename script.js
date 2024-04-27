@@ -121,7 +121,6 @@ function remainingTime(dueDate) {
 
 function setupNotifications(task) {
     const timeUntilDue = new Date(task.dueDate) - Date.now();
-    console.log(timeUntilDue, task.dueDate, Date.now());
     if (timeUntilDue > 0) {
         setTimeout(() => {
             const notification = new Notification('Tarefa Vencida', {
