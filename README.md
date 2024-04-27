@@ -2,6 +2,12 @@
 
 Este é um simples aplicativo de lista de tarefas desenvolvido em HTML, CSS e JavaScript. Com ele, os usuários podem adicionar tarefas com prazos limites e acompanhar o tempo restante para cada uma delas.
 
+## Imagens
+![Captura de tela 2024-04-27 193030](https://github.com/Bruno-Brandao-Silva/to-do-list/assets/72681281/5c19d31f-ba15-4b6b-bb37-ada6fa0c6c8c)
+![Captura de tela 2024-04-27 193045](https://github.com/Bruno-Brandao-Silva/to-do-list/assets/72681281/7ffc3414-050b-4f79-b688-41bbff02719d)
+![Captura de tela 2024-04-27 193142](https://github.com/Bruno-Brandao-Silva/to-do-list/assets/72681281/a59d8b8b-60ec-48f8-8edc-68398b75d24e)
+![Captura de tela 2024-04-27 193129](https://github.com/Bruno-Brandao-Silva/to-do-list/assets/72681281/a74fcbbd-8258-4f21-ae35-90f1504daf9b)
+
 ## Funcionalidades Principais
 
 - Adicionar novas tarefas com prazos limites.
