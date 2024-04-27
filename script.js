@@ -1,26 +1,38 @@
 const LOCAL_STORAGE_TASKS_KEY = 'tasks';
 
-const form = document.getElementById('form');
-const taskInput = document.getElementById('task');
-const dateTimeInput = document.getElementById('date');
-const taskList = document.getElementById('task-container');
+const taskForm = document.getElementById('newTaskForm');
+const taskInput = document.getElementById('taskText');
+const dateTimeInput = document.getElementById('taskDate');
+const tasksContainer = document.getElementById('tasksContainer');
+const newTaskContainer = document.getElementById('newTaskContainer');
+const newTaskButton = document.getElementById('newTaskButton');
 
-form.addEventListener('submit', function (e) {
+newTaskButton.onclick = openNewTaskModal;
+
+dateTimeInput.onchange = () => {
+    dateTimeInput.setCustomValidity('');
+}
+
+newTaskContainer.onclick = (e) => {
+    if (e.target === newTaskContainer) {
+        closeNewTaskModal();
+    }
+}
+
+taskForm.onsubmit = (e) => {
     e.preventDefault();
 
     const currentDate = new Date();
     const selectedDate = new Date(dateTimeInput.value);
 
     if (selectedDate <= currentDate) {
-        alert('A data escolhida deve ser posterior à data atual');
         dateTimeInput.setCustomValidity('A data escolhida deve ser posterior à data atual');
     }
 
     taskInput.value = taskInput.value.trim();
 
-    if (!form.checkValidity()) {
-        form.reportValidity();
-        dateTimeInput.setCustomValidity('');
+    if (!taskForm.checkValidity()) {
+        taskForm.reportValidity();
         return;
     }
 
@@ -36,7 +48,8 @@ form.addEventListener('submit', function (e) {
     localStorage.setItem(LOCAL_STORAGE_TASKS_KEY, JSON.stringify(tasks));
     setupNotifications(newTask);
     getTasks();
-});
+    closeNewTaskModal();
+};
 
 function getTasks() {
     let tasks;
@@ -46,13 +59,11 @@ function getTasks() {
     else {
         tasks = JSON.parse(localStorage.getItem(LOCAL_STORAGE_TASKS_KEY));
     }
-    if (tasks.length === 0 || tasks === null) {
-        return;
-    } else {
-        taskList.innerHTML = '';
-        taskList.id = 'task-container';
-        taskList.className = 'task-container';
-    }
+
+    tasksContainer.innerHTML = '';
+
+    if (tasks.length === 0 || tasks === null) return;
+
     tasks.forEach((task) => {
         const row = document.createElement('div');
         row.className = 'task'
@@ -60,12 +71,13 @@ function getTasks() {
         const content = document.createElement('div');
         content.className = 'content';
         row.appendChild(content);
+        createContent(task, content);
         setInterval(() => {
             createContent(task, content);
         }, 1000);
         row.appendChild(button);
 
-        taskList.appendChild(row);
+        tasksContainer.appendChild(row);
     });
 }
 
@@ -73,15 +85,13 @@ function createContent(task, content) {
     let { days, hours, minutes, seconds, dateTime } = remainingTime(task.dueDate);
     content.innerHTML = `
             <h3>${task.text}</h3>
-            <div>
-                <p class="reamin-time">Tempo Restante: 
-                    ${days > 0 ? `${days} dias, ` : ''}
-                    ${hours > 0 ? `${hours} horas, ` : ''}
-                    ${minutes > 0 ? `${minutes} minutos` : ''}
-                    ${seconds > 0 ? ` e ${seconds} segundos` : ''}
-                    </p>
-                <p class="limit-time">Prazo limite: ${dateTime}</p>
-            </div>
+            <p class="reamin-time">Tempo Restante: 
+                ${days > 0 ? `${days} dias, ` : ''}
+                ${hours > 0 ? `${hours} horas, ` : ''}
+                ${minutes > 0 ? `${minutes} minutos` : ''}
+                ${seconds > 0 ? ` e ${seconds} segundos` : ''}
+            </p>
+            <p class="limit-time">Prazo limite: ${dateTime}</p>
         `;
 }
 
@@ -94,7 +104,7 @@ function createButton(task) {
             return e.id !== task.id;
         });
         localStorage.setItem(LOCAL_STORAGE_TASKS_KEY, JSON.stringify(tasks));
-        location.reload();
+        getTasks();
     });
     return button;
 }
@@ -122,6 +132,17 @@ function setupNotifications(task) {
     }
 }
 
+function openNewTaskModal() {
+    newTaskContainer.style.display = 'flex';
+    taskInput.focus();
+    newTaskButton.style.display = 'none';
+}
+
+function closeNewTaskModal() {
+    taskForm.reset();
+    newTaskContainer.style.display = 'none';
+    newTaskButton.style.display = 'block';
+}
 
 window.addEventListener('load', function () {
     if (Notification.permission !== 'granted') {
